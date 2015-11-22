@@ -1,0 +1,28 @@
+{
+  "name": "depcheck-web",
+  "version": "0.0.1",
+  "description": "Post depcheck report to web service.",
+  "author": "Junle Li <lijunle@gmail.com>",
+  "license": "MIT",
+  "main": "src/index.js",
+  "bin": {
+    "depcheck-web": "bin/depcheck-web"
+  },
+  "scripts": {
+    "lint": "eslint src/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/depcheck/depcheck-web.git"
+  },
+  "keywords": [
+    "depcheck",
+    "web",
+    "report"
+  ],
+  "devDependencies": {
+    "babel-eslint": "^4.1.5",
+    "eslint": "^1.10.1",
+    "eslint-config-airbnb": "^1.0.0"
+  }
+}
