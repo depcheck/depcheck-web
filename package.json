@@ -9,6 +9,7 @@
     "depcheck-web": "bin/depcheck-web"
   },
   "scripts": {
+    "test": "babel-node ./test/cli.js",
     "lint": "eslint src/",
     "compile": "babel src/ -d dist/",
     "depcheck": "depcheck",
