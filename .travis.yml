@@ -1,0 +1,14 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - 0.12
+  - 3
+  - 4
+  - 5
+
+script:
+  - npm run depcheck
+  - npm run depcheck-web
+  - npm run lint
