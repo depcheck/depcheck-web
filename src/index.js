@@ -1,4 +1,4 @@
-import request from 'request';
+import request from 'superagent';
 
 export default function postWebReport({
   token,
@@ -9,24 +9,14 @@ export default function postWebReport({
   result,
   }) {
   return new Promise((resolve, reject) =>
-    request({
-      baseUrl,
-      url,
-      method: 'POST',
-      json: true,
-      body: {
-        token,
-        branch,
-        report,
-        result,
-      },
-    }, (err, res, body) => {
-      if (err) {
-        reject(err);
-      } else if (res.statusCode !== 200) {
-        reject(body);
-      }
-
-      resolve(result);
-    }));
+    request
+    .post(`${baseUrl.replace(/\/+$/, '')}${url}`)
+    .accept('json')
+    .send({
+      token,
+      branch,
+      report,
+      result,
+    })
+    .end(err => err ? reject(err.response.body) : resolve(result)));
 }
