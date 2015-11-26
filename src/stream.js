@@ -1,17 +1,17 @@
-export default function readStdin() {
+export default function readStream(stream) {
   return new Promise(resolve => {
     const chunks = [];
 
-    process.stdin.setEncoding('utf8');
+    stream.setEncoding('utf8');
 
-    process.stdin.on('readable', () => {
-      const chunk = process.stdin.read();
+    stream.on('readable', () => {
+      const chunk = stream.read();
       if (chunk !== null) {
         chunks.push(chunk);
       }
     });
 
-    process.stdin.on('end', () => {
+    stream.on('end', () => {
       const stdin = chunks.join('');
       resolve(stdin);
     });

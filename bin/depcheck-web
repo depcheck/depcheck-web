@@ -2,9 +2,4 @@
 
 /* eslint-disable no-console */
 
-require('../dist/index').default(
-  process.argv.slice(2),
-  console.log,
-  console.error,
-  process.env,
-  process.exit);
+require('../dist/cli').default(process);
