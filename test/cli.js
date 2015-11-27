@@ -33,7 +33,7 @@ test('should post the input and succeed', assert => {
 
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, 0))
-    .then(() => assert.equal(processMocker.stdout.value, 'Post web report succeed.'))
+    .then(() => assert.equal(processMocker.stdout.value, 'Post web report succeed.\n'))
     .then(() => assert.equal(processMocker.stderr.value, ''))
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
@@ -55,7 +55,7 @@ test('should log error and exit with -1 when request failed', assert => {
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, -1))
     .then(() => assert.equal(processMocker.stdout.value, ''))
-    .then(() => assert.equal(processMocker.stderr.value, "'error-body'"))
+    .then(() => assert.equal(processMocker.stderr.value, "'error-body'\n"))
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
 });
@@ -107,7 +107,7 @@ test('should handle any server-side exception', assert => {
 
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, -1))
-    .then(() => assert.equal(processMocker.stderr.value, '[Error: message]'))
+    .then(() => assert.equal(processMocker.stderr.value, '[Error: message]\n'))
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
 });
@@ -126,7 +126,7 @@ test('should skip post request when git provider is not supported', assert => {
 
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, 0))
-    .then(() => assert.equal(processMocker.stdout.value, 'Build environment is not supported yet, please report issue to https://github.com/depcheck/depcheck-web'))
+    .then(() => assert.equal(processMocker.stdout.value, 'Build environment is not supported yet, please report issue to https://github.com/depcheck/depcheck-web\n'))
     .then(() => assert.equal(processMocker.stderr.value, ''))
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
@@ -146,7 +146,7 @@ test('should skip post request when run in a pull request', assert => {
 
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, 0))
-    .then(() => assert.equal(processMocker.stdout.value, 'Skip posting depcheck report to web service because it runs in a pull request.'))
+    .then(() => assert.equal(processMocker.stdout.value, 'Skip posting depcheck report to web service because it runs in a pull request.\n'))
     .then(() => assert.equal(processMocker.stderr.value, ''))
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
