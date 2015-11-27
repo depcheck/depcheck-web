@@ -111,3 +111,43 @@ test('should handle any server-side exception', assert => {
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
 });
+
+test('should skip post request when git provider is not supported', assert => {
+  assert.timeoutAfter(5000); // 5 seconds
+
+  const processMocker = mockProcess({
+    env: {
+      ...env,
+      TRAVIS: undefined,
+    },
+  });
+
+  mock.post('https://depcheck.tk/github/tester/project', () => null);
+
+  return cli(processMocker)
+    .then(() => assert.equal(processMocker.exit.value, 0))
+    .then(() => assert.equal(processMocker.stdout.value, 'Build environment is not supported yet, please report issue to https://github.com/depcheck/depcheck-web'))
+    .then(() => assert.equal(processMocker.stderr.value, ''))
+    .catch(error => assert.fail(error))
+    .then(() => mock.clearRoutes());
+});
+
+test('should skip post request when run in a pull request', assert => {
+  assert.timeoutAfter(5000); // 5 seconds
+
+  const processMocker = mockProcess({
+    env: {
+      ...env,
+      TRAVIS_PULL_REQUEST: '123',
+    },
+  });
+
+  mock.post('https://depcheck.tk/github/tester/project', () => null);
+
+  return cli(processMocker)
+    .then(() => assert.equal(processMocker.exit.value, 0))
+    .then(() => assert.equal(processMocker.stdout.value, 'Skip posting depcheck report to web service because it runs in a pull request.'))
+    .then(() => assert.equal(processMocker.stderr.value, ''))
+    .catch(error => assert.fail(error))
+    .then(() => mock.clearRoutes());
+});
