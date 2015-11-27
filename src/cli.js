@@ -24,14 +24,14 @@ export default function cli({ argv, stdin, stdout, stderr, env, exit }) {
     report: args.report,
     result,
   })).then(() => {
-    stdout.write('Post web report succeed.');
+    stdout.write('Post web report succeed.\n');
     exit(0);
   }, message => {
     if (message.exit === 0) { // HACK exit with zero with pull request
-      stdout.write(message.message);
+      stdout.write(message.message + '\n');
       exit(0);
     } else {
-      stderr.write(inspect(message));
+      stderr.write(inspect(message) + '\n');
       exit(-1);
     }
   });
