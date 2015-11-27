@@ -93,3 +93,21 @@ test('should pass the second CLI argument as service URL', assert => {
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
 });
+
+test('should handle any server-side exception', assert => {
+  assert.timeoutAfter(5000); // 5 seconds
+
+  const processMocker = mockProcess({
+    env,
+  });
+
+  mock.post('https://depcheck.tk/github/tester/project', () => {
+    throw new Error('message');
+  });
+
+  return cli(processMocker)
+    .then(() => assert.equal(processMocker.exit.value, -1))
+    .then(() => assert.equal(processMocker.stderr.value, '[Error: message]'))
+    .catch(error => assert.fail(error))
+    .then(() => mock.clearRoutes());
+});
