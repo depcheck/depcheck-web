@@ -59,3 +59,37 @@ test('should log error and exit with -1 when request failed', assert => {
     .catch(error => assert.fail(error))
     .then(() => mock.clearRoutes());
 });
+
+test('should pass the first CLI argument as report name', assert => {
+  assert.timeoutAfter(5000); // 5 seconds
+  assert.plan(2);
+
+  const processMocker = mockProcess({
+    env,
+    argv: ['report'],
+  });
+
+  mock.post('https://depcheck.tk/github/tester/project', req =>
+    assert.equal(req.body.report, 'report'));
+
+  return cli(processMocker)
+    .then(() => assert.equal(processMocker.exit.value, 0))
+    .catch(error => assert.fail(error))
+    .then(() => mock.clearRoutes());
+});
+
+test('should pass the second CLI argument as service URL', assert => {
+  assert.timeoutAfter(5000); // 5 seconds
+
+  const processMocker = mockProcess({
+    env,
+    argv: [null, 'https://depcheck.service'],
+  });
+
+  mock.post('https://depcheck.service/github/tester/project', () => null);
+
+  return cli(processMocker)
+    .then(() => assert.equal(processMocker.exit.value, 0))
+    .catch(error => assert.fail(error))
+    .then(() => mock.clearRoutes());
+});
