@@ -17,10 +17,20 @@ const env = {
 
 test('should post the input and succeed', assert => {
   assert.timeoutAfter(5000); // 5 seconds
+  assert.plan(7);
 
-  const processMocker = mockProcess({ env });
+  const processMocker = mockProcess({
+    env,
+    input: 'project-result',
+  });
 
-  mock.post('https://depcheck.tk/github/tester/project', () => null);
+  mock.post('https://depcheck.tk/github/tester/project', req => {
+    assert.deepEqual(req.body.token, 'project-token');
+    assert.deepEqual(req.body.branch, 'test');
+    assert.deepEqual(req.body.report, '');
+    assert.deepEqual(req.body.result, 'project-result');
+  });
+
   return cli(processMocker)
     .then(() => assert.equal(processMocker.exit.value, 0))
     .then(() => assert.equal(processMocker.stdout.value, 'Post web report succeed.'))
