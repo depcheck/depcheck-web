@@ -27,7 +27,12 @@ export default function cli({ argv, stdin, stdout, stderr, env, exit }) {
     stdout.write('Post web report succeed.');
     exit(0);
   }, message => {
-    stderr.write(inspect(message));
-    exit(-1);
+    if (message.exit === 0) { // HACK exit with zero with pull request
+      stdout.write(message.message);
+      exit(0);
+    } else {
+      stderr.write(inspect(message));
+      exit(-1);
+    }
   });
 }

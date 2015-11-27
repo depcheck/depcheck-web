@@ -1,3 +1,10 @@
+function safeExit(message) {
+  return {
+    message,
+    exit: 0,
+  };
+}
+
 function getSettings(env) {
   return new Promise((resolve, reject) => {
     // TODO web report only supports Travis CI and GitHub now
@@ -11,14 +18,14 @@ function getSettings(env) {
       });
     }
 
-    return reject('Build environment is not supported yet, please report issue to https://github.com/depcheck/depcheck-web');
+    return reject(safeExit('Build environment is not supported yet, please report issue to https://github.com/depcheck/depcheck-web'));
   });
 }
 
 function validatePullRequest(settings) {
   return new Promise((resolve, reject) =>
     settings.pullRequest
-    ? reject('Skip posting depcheck report to web service because it runs in a pull request.')
+    ? reject(safeExit('Skip posting depcheck report to web service because it runs in a pull request.'))
     : resolve(settings));
 }
 
